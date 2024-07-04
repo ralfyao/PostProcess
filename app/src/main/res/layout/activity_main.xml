@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/scannerView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14" />
+        app:layout_constraintVertical_bias="0.103" />
 
     <EditText
         android:id="@+id/txv_result"
@@ -51,6 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scannerView"
         app:layout_constraintVertical_bias="0.25" />
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -59,10 +60,10 @@
         android:textSize="48dp"
         app:layout_constraintBottom_toTopOf="@+id/txv_result"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.258"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintVertical_bias="0.679" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_data"

@@ -2,7 +2,6 @@ package com.yjfcasting.qrcode.postprocess;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,7 +26,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class LoginActivity extends BaseActivity {
-    private OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(
+    private final OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(
             new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
     ).build();
     private boolean canLogin = false;
@@ -52,23 +50,29 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.d("OkHttp result:", e.getMessage());
+                Log.d("OkHttp result:", e.getMessage() == null ? "" : e.getMessage());
                 makeMessage(e.getMessage(), Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
-                    LoginModel result = new Gson().fromJson(response.body().string(), LoginModel.class);
-                    if (result.WorkStatus.equals("OK")) {
-                        canLogin = true;
-                    }
-                    Log.d("LoginResponse",""+result);
-                    if (canLogin) {
-                        redirectMain(workerNumber.getText().toString());
+                    if (response.body() != null) {
+                        LoginModel result = new Gson().fromJson(response.body().string(), LoginModel.class);
+                        if (result.WorkStatus.equals("OK")) {
+                            canLogin = true;
+                        }
+                        Log.d("LoginResponse", "" + result);
+                        if (canLogin) {
+                            redirectMain(workerNumber.getText().toString());
+                        } else {
+                            makeMessage("輸入的帳號不存在或密碼有誤", Toast.LENGTH_SHORT);
+                        }
                     } else {
-                        makeMessage("輸入的帳號不存在或密碼有誤", Toast.LENGTH_SHORT);
+                        makeMessage("回傳的資料是空的", Toast.LENGTH_SHORT);
                     }
+                } catch (IOException e) {
+                    Log.d("Error",""+e);
                 } catch (Exception e) {
                     Log.d("Error",""+e);
                 }
@@ -84,9 +88,12 @@ public class LoginActivity extends BaseActivity {
             Intent mainProgram = new Intent(this, MainActivity.class);
             mainProgram.putExtra("workerNumber", workerNumber);
             startActivity(mainProgram);
-        }
-        catch (Exception ex){
-            Log.e("Error", ex.getMessage().toString());
+        } catch (Exception ex){
+            if (ex.getMessage() != null) {
+                Log.e("Error", ex.getMessage().toString());
+            } else {
+                Log.e("Error", "ex.getMessage() == null");
+            }
         }
     }
 }
