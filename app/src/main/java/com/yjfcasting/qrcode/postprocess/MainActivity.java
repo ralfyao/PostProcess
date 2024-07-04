@@ -69,6 +69,9 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
         QRResult=findViewById(R.id.txv_result);
         scannerView = findViewById(R.id.scannerView);
         scannerView.startCamera();
+//        scannerView.setResultHandler(this);
+        recyclerView = findViewById(R.id.rc_data);
+        recyclerView.setVerticalScrollBarEnabled(true);
         barcodeEncoder= new BarcodeEncoder();
         requestPermissions(new String[]{android.Manifest.permission.CAMERA},1);
         //按下掃描按紐
@@ -135,6 +138,7 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
         process(result.getText());
         QRResult.setText("");
         scannerView.startCamera();
+//        scannerView.setResultHandler(this);
     }
     public void process(String result){
         try {
@@ -152,7 +156,7 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
             String workOrderHead = workOrderArr[0].split("=")[1];
             String workOrderNumber = workOrderArr[1].split("=")[1];
             FormBody body = new FormBody.Builder()
-                    .add("WorkOrder", workOrderHead + "-" + workOrderNumber)
+                    .add("WorkOrder", workOrderHead.trim() + "-" + workOrderNumber)
                     .add("InStationDate", new SimpleDateFormat("yyyyMMdd").format(new Date()))
                     .add("Submittor", user_code)
                     .add("ReveiceFlag", "").build();
@@ -161,6 +165,7 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
                     .post(body) // 使用post連線
                     .build();
             Call call = okHttpClient.newCall(request);
+
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -172,20 +177,35 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
                     LoadWorkOrderMeta meta = new Gson().fromJson(response.body().string(), LoadWorkOrderMeta.class);
                     if (meta.WorkStatus.equals("OK")) {
                         Log.d("call.enqueue onResponse", new Gson().toJson(meta.result).toString());
-                        workOrderMetaList.add(meta.result);
+                        List<String> formatData = new ArrayList<String>();
+                        boolean added = false;
+                        for (int i = 0; i < workOrderMetaList.size(); i++) {
+//                            if (i % 4 == 0) {
+                                if (workOrderMetaList.get(i).WorkOrder.equals(meta.result.WorkOrder)){
+                                    added = true;
+                                    break;
+                                }
+//                            }
+                        }
+                        if (!added){
+                            workOrderMetaList.add(meta.result);
+                        } else {
+                            makeMessage(meta.result.WorkOrder+"已加入到列表", Toast.LENGTH_SHORT);
+                            return;
+                        }
+                        for (int i = 0; i < workOrderMetaList.size(); i++) {
+                            formatData.add(workOrderMetaList.get(i).WorkOrder);
+                            formatData.add(workOrderMetaList.get(i).InStationDate);
+                            formatData.add(workOrderMetaList.get(i).Submittor);
+                            formatData.add(workOrderMetaList.get(i).ReveiceFlag);
+                        }
+                        initGridViewWData(formatData);
                     } else {
                         makeMessage(meta.ErrorMsg, Toast.LENGTH_SHORT);
                     }
                 }
             });
-            List<String> formatData = new ArrayList<String>();
-            for (int i = 0; i < workOrderMetaList.size(); i++) {
-                formatData.add(workOrderMetaList.get(i).WorkOrder);
-                formatData.add(workOrderMetaList.get(i).InStationDate);
-                formatData.add(workOrderMetaList.get(i).Submittor);
-                formatData.add(workOrderMetaList.get(i).ReveiceFlag);
-            }
-            initGridViewWData(formatData);
+
         }
         catch (Exception ex){
             makeMessage(ex.getMessage(), Toast.LENGTH_SHORT);
@@ -227,5 +247,10 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
         catch (Exception ex){
             makeMessage(ex.getMessage(), Toast.LENGTH_SHORT);
         }
+    }
+
+    public void logout(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
