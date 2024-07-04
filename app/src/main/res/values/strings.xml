@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">拆箱運送回報</string>
+    <string name="company_name">源潤豐鑄造股份有限公司</string>
+    <string name="worker_number">司機工號</string>
+    <string name="please_input_worker_number">輸入司機工號</string>
+    <string name="login">登入</string>
+    <string name="input_qrcode">請刷取qrcode</string>
+    <string name="url">https://mail.yjfcasting.com:8090</string>
+    <string name="submit">送出</string>
+</resources>
