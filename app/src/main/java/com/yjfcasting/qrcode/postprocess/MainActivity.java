@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity implements ZXingScannerView.Resul
 
     private List<String> generateSampleData() {
         List<String> data = new ArrayList<>();
-        data.add("製令別單號");
+        data.add("製令別單號    ");
         data.add("到站日期");
         data.add("送出者");
         data.add("簽收Flag");

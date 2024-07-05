@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
     tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rc_data"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="291dp"
+        android:layout_toEndOf="@+id/btn_logout"
+        android:onClick="submit"
+        android:text="@string/submit"
+        app:layout_constraintHorizontal_bias="0.996"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <me.dm7.barcodescanner.zxing.ZXingScannerView
+        android:id="@+id/scannerView"
+        android:layout_width="322dp"
+        android:layout_height="287dp"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rc_data"
+        android:layout_marginStart="-197dp"
+        android:layout_marginBottom="293dp"
+        android:layout_toEndOf="@+id/txv_result"
         android:onClick="logout"
         android:text="@string/logout"
         app:layout_constraintBottom_toTopOf="@+id/rc_data"
@@ -20,68 +46,15 @@
         app:layout_constraintTop_toBottomOf="@+id/txv_result"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="68dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="20dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/scannerView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
-
-    <EditText
-        android:id="@+id/txv_result"
-        android:layout_width="496dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="340dp"
-        android:hint="@string/input_qrcode"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.994"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <me.dm7.barcodescanner.zxing.ZXingScannerView
-        android:id="@+id/scannerView"
-        android:layout_width="322dp"
-        android:layout_height="287dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btn_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
-        android:text="@string/scan"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.094"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scannerView"
-        app:layout_constraintVertical_bias="0.218" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="422dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="4dp"
-        android:text="@string/company_name"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/txv_result"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.994" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_data"
-        android:layout_width="536dp"
-        android:layout_height="284dp"
-        android:layout_marginTop="92dp"
+        android:layout_width="657dp"
+        android:layout_height="272dp"
+        style="@style/CardView"
+        android:layout_alignBottom="@+id/txv_result"
+        android:layout_marginStart="147dp"
+        android:layout_marginBottom="-345dp"
+        android:layout_toEndOf="@+id/btn_scan"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.994"
@@ -89,17 +62,50 @@
         app:layout_constraintTop_toBottomOf="@+id/txv_result"
         app:layout_constraintVertical_bias="1.0" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="68dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="35dp"
+        android:layout_toEndOf="@+id/scannerView"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintVertical_bias="0.106" />
+
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="submit"
-        android:text="@string/submit"
-        app:layout_constraintBottom_toTopOf="@+id/rc_data"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.996"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txv_result"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_alignStart="@+id/scannerView"
+        android:layout_alignBottom="@+id/scannerView"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="-91dp"
+        android:text="@string/scan"
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintVertical_bias="0.218" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="422dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="7dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:text="@string/company_name"
+        android:textSize="36dp"
+        app:layout_constraintVertical_bias="0.994" />
+
+    <EditText
+        android:id="@+id/txv_result"
+        android:layout_width="496dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textView4"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="340dp"
+        android:layout_toEndOf="@+id/scannerView"
+        android:hint="@string/input_qrcode"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.994"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</RelativeLayout>

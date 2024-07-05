@@ -45,6 +45,10 @@ public class LoginActivity extends BaseActivity {
 
     public void doLogin(View view) {
         EditText workerNumber = findViewById(R.id.workerNumber);
+        if (workerNumber.getText().toString().trim().equals("")){
+            makeMessage("請輸入司機工號", Toast.LENGTH_SHORT);
+            return;
+        }
         Request r = new Request.Builder().url(Constant.url + "/api/OutsourceLogin?account="+workerNumber.getText()).build();
         Call call = okHttpClient.newCall(r);
         call.enqueue(new Callback() {
